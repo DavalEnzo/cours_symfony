@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification produit{% endblock %}
+
+{% block body %}
+    <h1>Modification produit n°{{ produit.id }}</h1>
+
+    {{form(edit)}}
+{% endblock %}

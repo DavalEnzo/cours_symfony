@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produits{% endblock %}
+
+{% block body %}
+<h1 class="text-center">Produits</h1>
+<div class="row row-cols-4 justify-content-md-center mt-5">
+    {% for produit in produits %}
+    <div class="col">
+        <div class="card text-center" style="width: 18rem;">
+            {% if produit.image %}
+               {# asset utilise les liens dans le dossier public #}
+            <img src="../{{ asset('uploads/' ~ produit.image) }}" class="card-img-top">
+            {% else %}
+                <img src="https://via.placeholder.com/150" class="card-img-top" alt="...">
+            {% endif %}
+            <div class="card-body">
+                <h1 class="card-title">{{ produit.nom }}</h1>
+                <h5 class="card-subtitle mb-2 text-muted">{{ produit.description }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ produit.categorie.nom }}</h6>
+                <h6 class="card-subtitle mb-2 fw-bold">{{ produit.prix }} €</h6>
+                <div class="text-center mt-3">
+                    <a class="btn btn-primary" style="width: 100px;"
+                       href="{{ path('un_produit', {'id': produit.id}) }}">Voir</a>
+                    <a class="btn btn-danger" type="button"
+                       href="{{ path('produit_delete', {'id' : produit.id}) }}">Supprimer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="mt-5">
+    <h2 class="text-center">Ajouter un produit</h2>
+    {{ form_start(formulaire) }}
+    <div class="my-custom-class-for-errors">
+        {{ form_errors(formulaire) }}
+    </div>
+    {{ form(formulaire) }}
+</div>
+
+{% endblock %}
