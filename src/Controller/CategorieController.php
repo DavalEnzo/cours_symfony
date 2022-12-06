@@ -9,11 +9,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
+#[Route('{_locale}')]
 class CategorieController extends AbstractController
 {
     #[Route('/categorie', name: 'app_categorie')]
-    public function index(EntityManagerInterface $em, Request $request): Response
+    public function index(EntityManagerInterface $em, Request $request, TranslatorInterface $translator): Response
     {
         // Création d'un objet vide pour le formulaire
         $categorie = new Categorie();
@@ -29,10 +31,13 @@ class CategorieController extends AbstractController
             $categorie = new Categorie();
             $form = $this->createForm(CategorieType::class, $categorie);
 
-            $this->addFlash('success', 'Catégorie est ajoutée');
+            $this->addFlash('success', $translator->trans('categorie.ajoute'));
+            // $translator->trans('categorie.nb', ['%nb%' => 2]); permet de traduire avec des paramètres
         }
 
         $categories = $em->getRepository(Categorie::class)->findAll();
+
+        $countCategories = count($categories);
         /**
          * Il existe plusieurs méthodes pour interagir avec les tables :
          * findAll()  -> récupère toute la table
@@ -43,6 +48,7 @@ class CategorieController extends AbstractController
 
         return $this->render('categorie/index.html.twig', [
             'categories' => $categories,
+            'nbCategories' => $countCategories,
             'formulaire' => $form->createView(), // Envoi du formulaire à la vue
         ]);
     }

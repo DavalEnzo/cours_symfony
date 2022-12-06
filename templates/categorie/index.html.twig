@@ -6,6 +6,7 @@
     {%  if categories is empty %}
         <p>Il n'y a aucune de catégories</p>
     {% else %}
+        <p>{{ 'categorie.nb' | trans( {'%nb%': nbCategories}) }}</p>
         {% for c in categories %}
             <h3>{{ c.nom }}</h3>
             <p>{{ c.description }}</p>
@@ -14,7 +15,7 @@
             <hr>
         {% endfor %}
     {% endif %}
-<h2>Ajouter une catégorie</h2>
+<h2>{{ 'categorie.titre_ajouter' | trans }}</h2>
     {{ form_start(formulaire) }}
     <div class="my-custom-class-for-errors">
         {{ form_errors(formulaire) }}
